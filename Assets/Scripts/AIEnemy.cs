@@ -76,7 +76,16 @@ public class AIEnemy : MonoBehaviour
     {
         while (CurrentState==EnemyState.PATROL)
         {
-            agente.speed = 4;
+            if (pointsDamage<=10)
+            {
+                agente.speed = 5;
+            }
+            else if (pointsDamage>=15)
+            {
+                agente.speed = 4;
+            }
+
+           
             theLineSigth.senssivity = LineSigth.SigthtSensitivity.SCRICT;
             theAgent.isStopped = false; //Para que siga patrullando con sensibilidad estricta
             theAgent.SetDestination(destination.position); //hacia el destino que tenga asiganada
@@ -102,7 +111,15 @@ public class AIEnemy : MonoBehaviour
     {
         while (CurrentState==EnemyState.CHASE)
         {
-            agente.speed = 8;
+            if (pointsDamage<=10)
+            {
+                agente.speed = 9;
+            }
+            else if (pointsDamage>=15)
+            {
+                agente.speed = 8;
+            }
+            
             theLineSigth.senssivity = LineSigth.SigthtSensitivity.LOOSE; //para que sea mas dificil que pierda de vista al objetivo
             theAgent.isStopped = false; //Para que siga patrullando con sensibilidad imprecisa
             theAgent.SetDestination(theLineSigth.lastKnowSigth); //hacia el ultimo sitio que vio al objetivo

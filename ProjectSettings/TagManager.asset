@@ -8,6 +8,8 @@ TagManager:
   - Fire
   - FireWorks
   - Destination
+  - Enemy
+  - Enemy1
   layers:
   - Default
   - TransparentFX
