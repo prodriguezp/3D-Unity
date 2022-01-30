@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
+using Random = System.Random;
 
 public enum GameState
 {
@@ -18,6 +19,9 @@ public class GameManager : MonoBehaviour
     public static GameManager sharedInstance;
 
     public GameState currentGameState = GameState.menu;
+    public List<Vector3> vectores = new List<Vector3>();
+    public GameObject healItem;
+
 
     public void CheckCoinsNumber()
     {
@@ -28,10 +32,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void generarItemHeal()
+    {
+        Random random = new Random();
+        int valor;
+        
+        Debug.Log("CURA GENERADA");
+        
+        valor=random.Next(0,vectores.Count);
+        Instantiate(healItem, vectores[valor], Quaternion.identity);
+        vectores.RemoveAt(valor);
+            
+    }
     private void Awake()
     {
         sharedInstance = this;
+        vectores.Add(new Vector3(-9.7f,2.5f,27.42f));
+        vectores.Add(new Vector3(-6.34f,2.84f,214.33f));
+        vectores.Add(new Vector3(-50f,2.47f,198.84f));
+        //vectores.Add(new Vector3(44,5,158));
+        //vectores.Add(new Vector3(49,5,158));
     }
+
+
+
 
     public void StartGame()
     {
