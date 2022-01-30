@@ -25,6 +25,8 @@ public class AIEnemy : MonoBehaviour
     private Transform target; // la inciializaremos en el Awake;
     public Transform destination; //El destinoo por donde patrullara el enemigo. La asignaremos en el Start
     private Animator _animator;
+    public NavMeshAgent agente;
+    
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -32,8 +34,10 @@ public class AIEnemy : MonoBehaviour
         theLineSigth = GetComponent<LineSigth>();
         theAgent = GetComponent<NavMeshAgent>();
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        GameObject[] randomDestinations = GameObject.FindGameObjectsWithTag("Destination");
-        destination = randomDestinations[Random.Range(0, randomDestinations.Length)].GetComponent<Transform>();
+        List<GameObject> randomDestinations = new List<GameObject>(GameObject.FindGameObjectsWithTag("Destination"));
+        int valor = Random.Range(0, randomDestinations.Count);
+        destination = randomDestinations[valor].GetComponent<Transform>();
+        randomDestinations.RemoveAt(valor);
     }
 
     public EnemyState CurrentState //propiedades para acceder _currentState mediante get y set
@@ -72,6 +76,7 @@ public class AIEnemy : MonoBehaviour
     {
         while (CurrentState==EnemyState.PATROL)
         {
+            agente.speed = 4;
             theLineSigth.senssivity = LineSigth.SigthtSensitivity.SCRICT;
             theAgent.isStopped = false; //Para que siga patrullando con sensibilidad estricta
             theAgent.SetDestination(destination.position); //hacia el destino que tenga asiganada
@@ -97,6 +102,7 @@ public class AIEnemy : MonoBehaviour
     {
         while (CurrentState==EnemyState.CHASE)
         {
+            agente.speed = 8;
             theLineSigth.senssivity = LineSigth.SigthtSensitivity.LOOSE; //para que sea mas dificil que pierda de vista al objetivo
             theAgent.isStopped = false; //Para que siga patrullando con sensibilidad imprecisa
             theAgent.SetDestination(theLineSigth.lastKnowSigth); //hacia el ultimo sitio que vio al objetivo
