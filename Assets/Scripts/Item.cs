@@ -16,6 +16,7 @@ public class Item : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             GameManager.sharedInstance.CheckCoinsNumber();
+            Timer.sharedInstance.countdown += 10;//incrementa el tiempo de juego cada vez que cogues un item
             Destroy(gameObject);
         }
     }
