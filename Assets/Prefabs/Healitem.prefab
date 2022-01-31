@@ -110,4 +110,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd32b7efe5d84aa4fb92c92b922b1698, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sonidaVida: {fileID: 8300000, guid: fbe3a6469c87b09449d2f99f20004614, type: 3}
+  sonidaVida: {fileID: 8300000, guid: 0d8bc781d35b8434a8a0e6255e6bb826, type: 3}

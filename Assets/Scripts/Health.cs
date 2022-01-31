@@ -17,7 +17,8 @@ public class Health : MonoBehaviour
             if (_healthPoints<=0)
             {
                 Debug.Log("Has muerto");
-                Destroy(gameObject);//destruimos el GameObject que tenga este script
+                Timer.sharedInstance.startCountdown = false;
+                GameManager.sharedInstance.GameOver();
             }
         }
     }
