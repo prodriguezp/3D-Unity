@@ -65,18 +65,12 @@ public class GameManager : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
         sharedInstance = this;
-        vectores.Add(new Vector3(-9.7f,2.5f,27.42f));
-        vectores.Add(new Vector3(-6.34f,2.84f,214.33f));
-        vectores.Add(new Vector3(-50f,2.47f,198.84f));
         
         vectores.Add(new Vector3(-9.7f,2.5f,27.42f));
         vectores.Add(new Vector3(-6.34f,2.84f,214.33f));
-        vectores.Add(new Vector3(-50f,2.47f,198.84f));
-        
-
+        vectores.Add(new Vector3(-50f,2.47f,198.84f));        
         vectores.Add(new Vector3(-9.7f,2.5f,27.42f));
         vectores.Add(new Vector3(-6.34f,2.84f,214.33f));
-        vectores.Add(new Vector3(-50f,2.47f,198.84f));
         
     }
      void Start()
