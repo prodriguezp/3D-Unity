@@ -1,11 +1,15 @@
 using System;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 namespace UnityStandardAssets.Water
 {
     [ExecuteInEditMode]
     public class WaterBasic : MonoBehaviour
     {
+        private FirstPersonController player;
+        public AudioClip chapoteo;
+        AudioSource chapoteoSource;
         void Update()
         {
             Renderer r = GetComponent<Renderer>();
@@ -28,5 +32,32 @@ namespace UnityStandardAssets.Water
                 Mathf.Repeat(offset4.z, 1.0f), Mathf.Repeat(offset4.w, 1.0f));
             mat.SetVector("_WaveOffset", offsetClamped);
         }
+        
+        private void Awake()
+        {
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<FirstPersonController>();
+            chapoteoSource = GetComponent<AudioSource>();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                player.m_AudioSource.volume = 0;
+                player.m_RunSpeed = 2.5f;
+                player.m_WalkSpeed = 3f;
+                chapoteoSource.clip = chapoteo;
+                chapoteoSource.Play();
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            player.m_AudioSource.volume = 0.5f;
+            chapoteoSource.Stop();
+            player.m_RunSpeed = 10f;
+            player.m_WalkSpeed = 5f;
+        }
+        
     }
 }

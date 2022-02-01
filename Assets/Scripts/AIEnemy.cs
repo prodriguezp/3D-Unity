@@ -26,10 +26,16 @@ public class AIEnemy : MonoBehaviour
     public Transform destination; //El destinoo por donde patrullara el enemigo. La asignaremos en el Start
     private Animator _animator;
     public NavMeshAgent agente;
+    public AudioSource golpe;
+    public AudioClip puñetazo;
+    private Health vidaP;
+    public Timer tiempo;
     
     private void Awake()
     {
+        vidaP = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
         _animator = GetComponent<Animator>();
+        golpe = GetComponent<AudioSource>();
         targetHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
         theLineSigth = GetComponent<LineSigth>();
         theAgent = GetComponent<NavMeshAgent>();
@@ -37,7 +43,7 @@ public class AIEnemy : MonoBehaviour
         List<GameObject> randomDestinations = new List<GameObject>(GameObject.FindGameObjectsWithTag("Destination"));
         int valor = Random.Range(0, randomDestinations.Count);
         destination = randomDestinations[valor].GetComponent<Transform>();
-        randomDestinations.RemoveAt(valor);
+        randomDestinations.RemoveAt(valor);;
     }
 
     public EnemyState CurrentState //propiedades para acceder _currentState mediante get y set
@@ -74,6 +80,9 @@ public class AIEnemy : MonoBehaviour
     
     public IEnumerator AIPatrol()
     {
+        
+        golpe.Stop();
+
         while (CurrentState==EnemyState.PATROL)
         {
             if (pointsDamage<=10)
@@ -89,7 +98,16 @@ public class AIEnemy : MonoBehaviour
             theLineSigth.senssivity = LineSigth.SigthtSensitivity.SCRICT;
             theAgent.isStopped = false; //Para que siga patrullando con sensibilidad estricta
             theAgent.SetDestination(destination.position); //hacia el destino que tenga asiganada
-        
+            
+            if ((int)tiempo.countdown==30)
+            {
+                Debug.Log("entramos");
+                List<GameObject> randomDestinations = new List<GameObject>(GameObject.FindGameObjectsWithTag("Destination"));
+                int valor = Random.Range(0, randomDestinations.Count);
+                destination = randomDestinations[valor].GetComponent<Transform>();
+                theAgent.SetDestination(destination.position); //hacia el destino que tenga asiganada
+
+            }
 
         while (theAgent.pathPending==true) //mientras esperamos a que se calcule la ruta a seguir en patrulla
         {
@@ -109,6 +127,9 @@ public class AIEnemy : MonoBehaviour
     
     public IEnumerator AIChase()
     {
+
+        golpe.Stop();
+
         while (CurrentState==EnemyState.CHASE)
         {
             if (pointsDamage<=10)
@@ -151,6 +172,13 @@ public class AIEnemy : MonoBehaviour
     
     public IEnumerator AIAttack()
     {
+        
+        if (vidaP.HelathPoints>0)
+        {
+            golpe.clip = puñetazo;
+            golpe.Play();
+        }
+        
         while (CurrentState== EnemyState.ATTACK)
         {
 

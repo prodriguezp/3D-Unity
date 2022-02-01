@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour
     public GameState currentGameState = GameState.menu;
     public List<Vector3> vectores = new List<Vector3>();
     public AudioClip normal;
-    public AudioClip chase;
     private AudioSource source;
     public Canvas menuCanvas;
     public Canvas gameCanvas;
@@ -37,8 +36,8 @@ public class GameManager : MonoBehaviour
     private Health vidaP;
     public bool pause=false;
     public GameObject[] enemigos;
-    public int valor=0;
-    public bool isAttacked = false;
+    private float contador;
+    public GameObject personajePrincipal;
 
     
     public void CheckCoinsNumber()
@@ -94,8 +93,6 @@ public class GameManager : MonoBehaviour
             gameOverCanvas.GetComponent<AudioSource>().Stop();    
             gameWinCanvas.GetComponent<AudioSource>().Stop();
             source.volume = 0;
-            //GameObject.FindGameObjectWithTag("Enemy").GetComponent<AIEnemy>().source.Stop();
-
         }
 
      void Update()
@@ -123,12 +120,12 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         ChangeStateGame(GameState.gameOver);
-        //GameObject.FindGameObjectWithTag("Enemy").GetComponent<AIEnemy>().source.volume=0;
         source.volume = 0;
         for (int i = 0; i < enemigos.Length; i++)
         {
-            Destroy(enemigos[i]);
+            enemigos[i].GetComponent<AIEnemy>().pointsDamage=0;
         }
+
         
     }
 
@@ -141,33 +138,6 @@ public class GameManager : MonoBehaviour
     {
         Application.Quit();
     }
-
-    public void comprobarEstado()
-    {
-        for (int i = 0; i < enemigos.Length; i++)
-        {
-            if (enemigos[i].GetComponent<AIEnemy>().CurrentState == AIEnemy.EnemyState.PATROL)
-            {
-                Debug.Log("enytrASD");
-                valor = 1;
-                isAttacked = false;
-            }
-        }
-        for (int i = 0; i < enemigos.Length; i++)
-        {
-            if (enemigos[i].GetComponent<AIEnemy>().CurrentState == AIEnemy.EnemyState.CHASE || enemigos[i].GetComponent<AIEnemy>().CurrentState == AIEnemy.EnemyState.ATTACK)
-            {
-                isAttacked = true;
-                Debug.Log("zzz");
-                valor = 2;
-            }
-        }
-    }
-
-    /*private void FixedUpdate()
-    {
-        comprobarEstado();
-    }*/
 
     void ChangeStateGame(GameState newGameState)
     {
@@ -185,25 +155,12 @@ public class GameManager : MonoBehaviour
         }
         else if (newGameState==GameState.inTheGame)
             {
-                comprobarEstado();
-
+                source.clip = normal;
+                source.volume = 0.1f;
+                source.Play();
                 //se muestra la pantalla del juego
                 GameObject.Find("Player").GetComponent<FirstPersonController>().enabled = true;
-                //GameObject.FindGameObjectWithTag("Enemy").GetComponent<AIEnemy>().source.Play();
-
-                if (!isAttacked)
-                {
-                    source.volume=0.1f;
-                    source.clip = normal;
-                    source.Play();
-                    
-                }else if (isAttacked)
-                {
-                    source.volume=0.1f;
-                    source.clip = chase;
-                    source.Play();
-                }
-
+                
                 menuCanvas.enabled = false;
                 gameOverCanvas.enabled = false;
                 gameCanvas.enabled = true;
@@ -213,42 +170,43 @@ public class GameManager : MonoBehaviour
                 Timer.sharedInstance.StartTimer();
                 menuCanvas.GetComponent<AudioSource>().Stop();
                 gameOverCanvas.GetComponent<AudioSource>().Stop();
-                source.volume = 0.1f;
+
             }
         else if (newGameState==GameState.gameOver) {
-                    //se muestra la pantalla de game over
-                    currentGameState = GameState.gameOver;
-                    GameObject.Find("Player").GetComponent<FirstPersonController>().enabled = false;
+            //se muestra la pantalla de game over
+            currentGameState = GameState.gameOver;
+            GameObject.Find("Player").GetComponent<FirstPersonController>().enabled = false;
                     
-                    if (Timer.sharedInstance.startCountdown)
-                    {
-                        menuCanvas.enabled = false;
-                        gameCanvas.enabled = false;
-                        gameOverCanvas.enabled = false;
-                        gameWinCanvas.enabled = true;
-                        gamePauseCanvas.enabled = false;
+            if (Timer.sharedInstance.startCountdown)
+            {
+                menuCanvas.enabled = false;
+                gameCanvas.enabled = false;
+                gameOverCanvas.enabled = false;
+                gameWinCanvas.enabled = true;
+                gamePauseCanvas.enabled = false;
                         
-                        menuCanvas.GetComponent<AudioSource>().Stop();
-                        gameWinCanvas.GetComponent<AudioSource>().Play();
-                        Timer.sharedInstance.startCountdown = false; //stop countdown
-                        Debug.Log("Congratulations, You're collect all the coins.");
-                        GameObject[] fireworks = GameObject.FindGameObjectsWithTag("Fire");
-                        foreach (var fire in fireworks)
-                        {
-                            fire.GetComponent<ParticleSystem>().Play();
-                        }
-                    }
-                    else{
-                        menuCanvas.enabled = false;
-                        gameCanvas.enabled = false;
-                        gameOverCanvas.enabled = true;
-                        gameWinCanvas.enabled = false;
-                        gamePauseCanvas.enabled = false;
-                        menuCanvas.GetComponent<AudioSource>().Stop();
-                        gameOverCanvas.GetComponent<AudioSource>().Play();
-                        Debug.Log("You Lose, the time is over.");
-                    }
-                    
+                menuCanvas.GetComponent<AudioSource>().Stop();
+                gameWinCanvas.GetComponent<AudioSource>().Play();
+                        
+                Timer.sharedInstance.startCountdown = false; //stop countdown
+                personajePrincipal.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+                Debug.Log("Congratulations, You're collect all the coins.");
+                GameObject[] fireworks = GameObject.FindGameObjectsWithTag("Fire");
+                foreach (var fire in fireworks)
+                {
+                    fire.GetComponent<ParticleSystem>().Play();
+                }
+            }
+            else{
+                menuCanvas.enabled = false;
+                gameCanvas.enabled = false;
+                gameOverCanvas.enabled = true;
+                gameWinCanvas.enabled = false;
+                gamePauseCanvas.enabled = false;
+                menuCanvas.GetComponent<AudioSource>().Stop();
+                gameOverCanvas.GetComponent<AudioSource>().Play();
+                Debug.Log("You Lose, the time is over.");
+            }
                 }else if (newGameState == GameState.pause) {  
                     menuCanvas.enabled = false;
                     gameOverCanvas.enabled = false;
@@ -269,15 +227,25 @@ public class GameManager : MonoBehaviour
         pause = !pause;
         if (pause)
         {
-            //GameObject.FindGameObjectWithTag("Enemy").GetComponent<AIEnemy>().source.volume=0;
+            contador = Timer.sharedInstance.countdown;//guardamos la variable antes de pausar la partida para saber cuantos segundos nos quedan de partida
             Time.timeScale = 0;
+            GameObject.Find("Player").GetComponent<FirstPersonController>().enabled = false;
+            source.Stop();
+            for (int i = 0; i < enemigos.Length; i++)
+            {
+                enemigos[i].GetComponent<AIEnemy>().golpe.Stop();
+            }
             ChangeStateGame(GameState.pause);
         }
         else
         {
             ChangeStateGame(GameState.inTheGame);
             Time.timeScale = 1;
+            for (int i = 0; i < enemigos.Length; i++)
+            {
+                enemigos[i].GetComponent<AIEnemy>().golpe.Play();
+            }
+            Timer.sharedInstance.countdown=contador;//le asignamos la varible de tiempo la variable contador que contiene el tiempo de la partida
         }
-        //Debug.Log(pause);
     } 
 }
