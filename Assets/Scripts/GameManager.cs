@@ -39,7 +39,11 @@ public class GameManager : MonoBehaviour
     private float contador;
     public GameObject personajePrincipal;
 
-    
+    private void FixedUpdate()
+    {
+        
+    }
+
     public void CheckCoinsNumber()
     {
         Debug.Log("Bloques: " +CoinsInGame.childCount);
@@ -91,7 +95,15 @@ public class GameManager : MonoBehaviour
 
      void Update()
      {
-
+         if (Input.GetButtonDown("Cancel"))
+         {   
+            
+             if ((currentGameState == GameState.inTheGame) || (currentGameState == GameState.pause))
+             {
+                 PauseRestart();
+             }
+             Debug.Log(currentGameState);
+         }
             if (Input.GetButtonDown("Submit"))
             {
                 if (currentGameState == GameState.menu)
@@ -103,6 +115,8 @@ public class GameManager : MonoBehaviour
                 {
                     SceneManager.LoadScene("SampleScene");
                 }
+
+                
             }
         }
     public void StartGame()
@@ -217,7 +231,7 @@ public class GameManager : MonoBehaviour
         }
     public void PauseRestart()
     {
-        
+        Debug.Log("Paiusa");
         pause = !pause;
         if (pause)
         {

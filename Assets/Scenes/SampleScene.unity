@@ -1370,6 +1370,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3379266785868591322, guid: e53cd9b7f6ac44f3ebe9af3f0f302b4f, type: 3}
+      propertyPath: sonido
+      value: 
+      objectReference: {fileID: 8300000, guid: 20b07624623edfa4e8d700dbbe1cd387, type: 3}
     - target: {fileID: 7342096781846708003, guid: e53cd9b7f6ac44f3ebe9af3f0f302b4f, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -1977,8 +1981,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713372704}
-  m_LocalRotation: {x: 0.30602187, y: 0.33811712, z: 0.11728758, w: -0.8821967}
-  m_LocalPosition: {x: 17.58486, y: -62.603897, z: 76.284584}
+  m_LocalRotation: {x: 0, y: 0.99950427, z: 0, w: 0.031484604}
+  m_LocalPosition: {x: 3.83, y: -62.270004, z: 193.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3004,6 +3008,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1589249316}
     m_Modifications:
+    - target: {fileID: 1562542056, guid: d027d4bce170c4abf8619a7d7980440e, type: 3}
+      propertyPath: sonido
+      value: 
+      objectReference: {fileID: 8300000, guid: 20b07624623edfa4e8d700dbbe1cd387, type: 3}
     - target: {fileID: 1562542058, guid: d027d4bce170c4abf8619a7d7980440e, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -4644,6 +4652,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4550895115453859366, guid: d4368066c6a114efe9bcb98e6cb1486d, type: 3}
+      propertyPath: sonido
+      value: 
+      objectReference: {fileID: 8300000, guid: 20b07624623edfa4e8d700dbbe1cd387, type: 3}
     - target: {fileID: 8250124179913677689, guid: d4368066c6a114efe9bcb98e6cb1486d, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -4713,6 +4725,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9118614345477598281, guid: 093a44e6b1a384df88fabf2976ac0055, type: 3}
+      propertyPath: sonido
+      value: 
+      objectReference: {fileID: 8300000, guid: 20b07624623edfa4e8d700dbbe1cd387, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 093a44e6b1a384df88fabf2976ac0055, type: 3}
 --- !u!1001 &3846640445394906017
@@ -4905,6 +4921,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4090758932557336615, guid: f75e1608d9f1e4f06a5027de3c813b5d, type: 3}
+      propertyPath: sonido
+      value: 
+      objectReference: {fileID: 8300000, guid: 20b07624623edfa4e8d700dbbe1cd387, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f75e1608d9f1e4f06a5027de3c813b5d, type: 3}
 --- !u!1001 &8037713682493741628
